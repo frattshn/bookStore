@@ -1,4 +1,4 @@
-#####BookStore
+### BookStore
 
 This is a simple REST API which using MongoDB as database.
 
