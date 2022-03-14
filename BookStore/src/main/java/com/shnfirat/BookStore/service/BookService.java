@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.shnfirat.BookStore.dto.BookCreateDTO;
 import com.shnfirat.BookStore.dto.BookUpdateDTO;
 import com.shnfirat.BookStore.dto.BookViewDTO;
+import com.shnfirat.BookStore.exception.BookNotFoundException;
 import com.shnfirat.BookStore.model.Book;
 import com.shnfirat.BookStore.repository.IBookRepository;
 
@@ -47,9 +48,9 @@ public class BookService {
 		
 	}
 
-//	public BookViewDTO getBookWithId(Long id) {
-//		return BookViewDTO.of(bookRepository.findById(id).orElseThrow(null));
-//	}
+	public BookViewDTO getBookWithId(String id) {
+		return BookViewDTO.of(bookRepository.findById(id).orElseThrow(() -> new BookNotFoundException("Book not found with this id : " + id)));
+	}
 
 	public BookViewDTO createBook(BookCreateDTO bookCreate) {
 		
@@ -67,7 +68,7 @@ public class BookService {
 		
 		Optional<Book> findBook = bookRepository.findById(id);
 		if(findBook.isEmpty()) {
-			return null;
+			throw new BookNotFoundException("Book not found with this id : " + id) ;
 		}else {
 			final Book book = findBook.get();
 			book.setName(updateBook.getName());
@@ -87,7 +88,7 @@ public class BookService {
 			final Book deleteBook = book.get();
 			bookRepository.delete(deleteBook);
 		}else {
-			//throw new Exception();
+			throw new BookNotFoundException("Book not found with this id : " + id);
 		}
 		
 	}

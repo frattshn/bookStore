@@ -40,10 +40,10 @@ public class BookController {
 	}
 	
 	
-//	@GetMapping("/{id}")
-//	public ResponseEntity<BookViewDTO> getBookWithId(@PathVariable Long id){
-//		return new ResponseEntity<>(bookService.getBookWithId(id), HttpStatus.OK);
-//	}
+	@GetMapping("/{id}")
+	public ResponseEntity<BookViewDTO> getBookWithId(@PathVariable String id){
+		return new ResponseEntity<>(bookService.getBookWithId(id), HttpStatus.OK);
+	}
 	
 	@PostMapping
 	public ResponseEntity<BookViewDTO> createBook(@RequestBody BookCreateDTO bookCreate){
