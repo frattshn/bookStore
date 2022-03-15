@@ -12,6 +12,10 @@ public interface IBookRepository extends MongoRepository<Book, Long>{
 	List<Book> findAllByAuthor(String author);
 
 	Optional<Book> findById(String id);
+	
+	Optional<Book> findByName(String name);
+
+	Optional<Book> findByAuthor(String author);
 
 	
 	

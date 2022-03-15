@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.shnfirat.BookStore.dto.BookCreateDTO;
 import com.shnfirat.BookStore.dto.BookUpdateDTO;
 import com.shnfirat.BookStore.dto.BookViewDTO;
+import com.shnfirat.BookStore.exception.BookAlreadyExistException;
 import com.shnfirat.BookStore.exception.BookNotFoundException;
 import com.shnfirat.BookStore.model.Book;
 import com.shnfirat.BookStore.repository.IBookRepository;
@@ -54,14 +55,19 @@ public class BookService {
 
 	public BookViewDTO createBook(BookCreateDTO bookCreate) {
 		
-		Book newBook = new Book();
-		newBook.setName(bookCreate.getName());
-		newBook.setAuthor(bookCreate.getAuthor());
-		newBook.setPageCount(bookCreate.getPageCount());
-
+		if(!isBookAlreadyExist(bookCreate)) {
+			Book newBook = new Book();
+			newBook.setName(bookCreate.getName());
+			newBook.setAuthor(bookCreate.getAuthor());
+			newBook.setPageCount(bookCreate.getPageCount());
+			
+			
+			bookRepository.save(newBook);
+			return BookViewDTO.of(newBook);			
+		}else {
+			throw new BookAlreadyExistException("Book already exist!");
+		}
 		
-		bookRepository.save(newBook);
-		return BookViewDTO.of(newBook);
 	}
 
 	public BookViewDTO updateBookWithId(String id, BookUpdateDTO updateBook) {
@@ -94,6 +100,16 @@ public class BookService {
 	}
 	
 
+	
+	public boolean isBookAlreadyExist(BookCreateDTO bookCreate) {
+		if(bookRepository.findByName(bookCreate.getName()).isPresent() && 
+				bookRepository.findByAuthor(bookCreate.getAuthor()).isPresent()){
+			return true;
+		}
+		return false;
+		
+		
+	}
 	
 	
 	
