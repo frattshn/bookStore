@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.shnfirat.BookStore.dto.BookCreateDTO;
@@ -22,9 +23,10 @@ public class BookService {
 	public BookService(IBookRepository bookRepository) {
 		this.bookRepository = bookRepository;
 	}
-
-	public List<BookViewDTO> getBooks() {
-		
+	
+	@Cacheable(cacheNames = "getBooksCache")
+	public List<BookViewDTO> getBooks() throws InterruptedException {
+		Thread.sleep(5000L);
 		List<BookViewDTO> bookViews = new ArrayList<BookViewDTO>();
 		final List<Book> books = bookRepository.findAll();
 		for (Book b : books) {

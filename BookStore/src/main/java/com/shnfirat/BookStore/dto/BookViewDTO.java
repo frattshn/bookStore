@@ -1,5 +1,6 @@
 package com.shnfirat.BookStore.dto;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import com.shnfirat.BookStore.model.Book;
@@ -7,8 +8,13 @@ import com.shnfirat.BookStore.model.Book;
 import lombok.Data;
 
 @Data
-public class BookViewDTO {
+public class BookViewDTO implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private String name;
 	
 	private String author;
